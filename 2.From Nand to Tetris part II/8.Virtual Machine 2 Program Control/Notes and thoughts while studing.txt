@@ -1,0 +1,12 @@
+after knowing that calling a predefined function is exactly
+the same as calling a user-defined one I thought that
+why we didn't make add, sub and the rest functions in 
+assembly code
+
+after finishing VMTranslator 2
+we can do that but saving your current state to move to 
+where you put some function in add and sub case can take
+more commands then what you can use for the function itself
+
+you can't do some shenanigans with 10 to 15 commands in order
+of calling 5-commands function, that's nonsense

@@ -1,0 +1,23 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/10/ArrayTest/Main.jack
+
+/** Computes the average of a sequence of integers. */
+class Main {
+    function void main() {
+        var String s;
+        let s = "fady";
+        let s = s.charAt(2);
+        let s = String.backSpace();
+
+        if (true){
+            return;
+        }
+        else
+        {
+            return;
+        }
+        return;
+    }
+}

@@ -1,0 +1,448 @@
+/**
+ * Implements the tic tac toe game.
+ * In this game 2 players can play tic tac toe  
+ * The game keep track of players' scores
+ * In the beginning, it's X turn
+ * Number pad keys are used to place X or O on board
+ * The 'q' key is used to quit the game.
+ */
+class Game_Board {
+    // some fields
+    field int x, y, currentPlayer, location;
+    field Array board;
+    field boolean exit;
+
+    
+    constructor Game_Board new() {
+        let x = 0;
+        let y = 0;
+        let currentPlayer = 0;
+        let location = 0;
+        let exit = false;
+        let board = Array.new(9);
+        do Game_Board.initialize();
+        return this;
+    }
+    
+    method void run() {
+        var char key;
+        var int winner;
+        while (~exit) {
+            do clearBoard();
+            let winner = round();
+            do Sys.wait(10000);
+            do incScore(winner);
+        }
+        return;
+    }
+
+    method int round() {
+        // logic of a complete round of the game, returns the winner (0 for X, 1 for O)
+        var int winner;
+        var int counter;
+        let counter = 9;
+        let winner = 2;
+        // bug: user still can edit a place they already placed X or O in it
+        while (winner = 2 & (~(counter = 0))) { 
+            // test
+            // do Output.moveCursor(17, 11);
+            // do Output.printInt(board[0]);
+            // do Output.printInt(board[1]);
+            // do Output.printInt(board[2]);
+            // do Output.moveCursor(18, 11);
+            // do Output.printInt(board[3]);
+            // do Output.printInt(board[4]);
+            // do Output.printInt(board[5]);
+            // do Output.moveCursor(19, 11);
+            // do Output.printInt(board[6]);
+            // do Output.printInt(board[7]);
+            // do Output.printInt(board[8]);
+            // test
+            do input();
+            do nextPlayer(); // increment currentPlayer and change its image
+            let winner = whoWins();
+            let counter = counter - 1;
+        }
+        return winner;
+    }
+
+    method void nextPlayer() {
+        if (exit) { return; }
+
+        if (currentPlayer = 0) {
+            let currentPlayer = 1;
+            do Game_Board.blanc(4262);
+            do Game_Board.drawO(4262);
+            do Game_Board.drawX(location);
+            return;
+        }
+        else {
+            let currentPlayer = 0;
+            do Game_Board.blanc(4262);
+            do Game_Board.drawX(4262);
+            do Game_Board.drawO(location);
+            return;
+        }
+    }
+
+    method void input() {
+        // takes user input and updates board array
+        var int key; 
+        while (key = 0) {
+            let key = Keyboard.keyPressed();
+        }
+
+        if (key = 49) {let board[0] = currentPlayer; let location = 5172;}
+        if (key = 50) {let board[1] = currentPlayer; let location = 5175;}
+        if (key = 51) {let board[2] = currentPlayer; let location = 5178;}
+        if (key = 52) {let board[3] = currentPlayer; let location = 3636;}
+        if (key = 53) {let board[4] = currentPlayer; let location = 3639;}
+        if (key = 54) {let board[5] = currentPlayer; let location = 3642;}
+        if (key = 55) {let board[6] = currentPlayer; let location = 2068;}
+        if (key = 56) {let board[7] = currentPlayer; let location = 2071;}
+        if (key = 57) {let board[8] = currentPlayer; let location = 2074;}
+        if (key = 113) {let exit = true;}
+            
+        while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+        }
+        
+        return;
+    }
+
+    method void clearBoard() {
+        let currentPlayer = 0;
+        do Game_Board.drawX(4262);
+        
+        let board[0] = 2;
+        let board[1] = 3;
+        let board[2] = 4;
+        let board[3] = 5;
+        let board[4] = 6;
+        let board[5] = 7;
+        let board[6] = 8;
+        let board[7] = 9;
+        let board[8] = 2;
+
+        do Game_Board.blanc(2071);
+        do Game_Board.blanc(2074);
+        do Game_Board.blanc(2077);
+        do Game_Board.blanc(3639);
+        do Game_Board.blanc(3642);
+        do Game_Board.blanc(3645);
+        do Game_Board.blanc(5175);
+        do Game_Board.blanc(5178);
+        do Game_Board.blanc(5181);
+        return;
+    }
+
+    method int whoWins() {
+        var int winner;
+        // (0 for X, 1 for O)
+        if ((board[0] = board[1]) & (board[1] = board[2])) { return board[0]; }
+        if ((board[3] = board[4]) & (board[4] = board[5])) { return board[3]; }
+        if ((board[6] = board[7]) & (board[7] = board[8])) { return board[6]; }
+        if ((board[0] = board[3]) & (board[3] = board[6])) { return board[0]; }
+        if ((board[1] = board[4]) & (board[4] = board[7])) { return board[1]; }
+        if ((board[2] = board[5]) & (board[5] = board[8])) { return board[2]; }
+        if ((board[0] = board[4]) & (board[4] = board[8])) { return board[0]; }
+        if ((board[2] = board[4]) & (board[4] = board[6])) { return board[2]; }
+        if (exit)                                          { return 3; } // exit
+        else                                               { return 2; } // no winner yet
+        
+    }
+
+    method void incScore(int player) {
+        if (player = 0) {
+            let x = x + 1; // move this inside function call
+            do Game_Board.setScore(0, x);
+        }
+        if (player = 1) {
+            let y = y + 1;
+            do Game_Board.setScore(1, y);
+        }
+        return;
+    }
+
+    function void setScore(int player, int score) {
+        // sets the score of the player (0 for X, 1 for O)
+        if (player = 0) {
+            // let x = score; // error
+            do Output.moveCursor(4, 6);
+            do Output.printInt(score);
+        }
+        if (player = 1) {
+            // let y = score;
+            do Output.moveCursor(5, 6);
+            do Output.printInt(score);
+        }
+        return;
+    }
+    
+    method void dispose() {
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    function void initialize() {
+        // game interface
+        do Output.println();
+        do Output.printString("         Tic-Tac-Toe");
+        do Output.moveCursor(4, 2);
+        do Output.printString("X =");
+        do Output.moveCursor(5, 2);
+        do Output.printString("O =");
+        do Output.moveCursor(10, 0);
+        do Output.printString("         Now Playing");
+        do Game_Board.setScore(0, 0);
+        do Game_Board.setScore(1, 0);
+        do Screen.setColor(true);
+        do Screen.drawRectangle(241, 0, 256, 256);
+        do Screen.drawRectangle(86, 124, 138, 176);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(88, 126, 136, 174);
+        do Screen.setColor(true);
+        do Output.moveCursor(17, 1);
+        do Output.printString("Q = Exit");
+        // board
+        do Screen.drawRectangle(359, 48, 361, 208);
+        do Screen.drawRectangle(407, 48, 409, 208);
+        
+        do Screen.drawRectangle(304, 103, 464, 105);
+        do Screen.drawRectangle(304, 151, 464, 153);
+        
+        do Output.moveCursor(3, 42);
+        do Output.printString("7     8     9");
+
+        do Output.moveCursor(19, 42);
+        do Output.printString("1     2     3");
+
+        do Output.moveCursor(11, 35);
+        do Output.printString("4");
+
+        do Output.moveCursor(11, 60);
+        do Output.printString("6");
+
+        return;
+    }
+
+    function void drawO(int location) {
+        var int memAddress; 
+	    let memAddress = 16384+location;
+        
+        do Memory.poke(memAddress, -1024);
+        do Memory.poke(memAddress +32, -512);
+        do Memory.poke(memAddress +64, -256);
+        do Memory.poke(memAddress +96, -128);
+        do Memory.poke(memAddress +128, -64);
+        do Memory.poke(memAddress +160, 2016);
+        do Memory.poke(memAddress +192, 1008);
+        do Memory.poke(memAddress +224, 504);
+        do Memory.poke(memAddress +256, 252);
+        do Memory.poke(memAddress +288, 126);
+        do Memory.poke(memAddress +320, 63);
+        do Memory.poke(memAddress +352, 31);
+        do Memory.poke(memAddress +384, 31);
+        do Memory.poke(memAddress +416, 31);
+        do Memory.poke(memAddress +448, 31);
+        do Memory.poke(memAddress +480, 31);
+        do Memory.poke(memAddress +512, 31);
+        do Memory.poke(memAddress +544, 31);
+        do Memory.poke(memAddress +576, 31);
+        do Memory.poke(memAddress +608, 31);
+        do Memory.poke(memAddress +640, 31);
+        do Memory.poke(memAddress +672, 63);
+        do Memory.poke(memAddress +704, 126);
+        do Memory.poke(memAddress +736, 252);
+        do Memory.poke(memAddress +768, 504);
+        do Memory.poke(memAddress +800, 1008);
+        do Memory.poke(memAddress +832, 1984);
+        do Memory.poke(memAddress +864, -128);
+        do Memory.poke(memAddress +896, -256);
+        do Memory.poke(memAddress +928, -512);
+        do Memory.poke(memAddress +960, -1024);
+        do Memory.poke(memAddress +992, -2048);
+        // column 1
+        do Memory.poke(memAddress +1, 63);
+        do Memory.poke(memAddress +33, 127);
+        do Memory.poke(memAddress +65, 255);
+        do Memory.poke(memAddress +97, 511);
+        do Memory.poke(memAddress +129, 1023);
+        do Memory.poke(memAddress +161, 2016);
+        do Memory.poke(memAddress +193, 4032);
+        do Memory.poke(memAddress +225, 8064);
+        do Memory.poke(memAddress +257, 16128);
+        do Memory.poke(memAddress +289, 32256);
+        do Memory.poke(memAddress +321, -1024);
+        do Memory.poke(memAddress +353, -2048);
+        do Memory.poke(memAddress +385, -2048);
+        do Memory.poke(memAddress +417, -2048);
+        do Memory.poke(memAddress +449, -2048);
+        do Memory.poke(memAddress +481, -2048);
+        do Memory.poke(memAddress +513, -2048);
+        do Memory.poke(memAddress +545, -2048);
+        do Memory.poke(memAddress +577, -2048);
+        do Memory.poke(memAddress +609, -2048);
+        do Memory.poke(memAddress +641, -2048);
+        do Memory.poke(memAddress +673, 31744);
+        do Memory.poke(memAddress +705, 15872);
+        do Memory.poke(memAddress +737, 7936);
+        do Memory.poke(memAddress +769, 3968);
+        do Memory.poke(memAddress +801, 1984);
+        do Memory.poke(memAddress +833, 992);
+        do Memory.poke(memAddress +865, 511);
+        do Memory.poke(memAddress +897, 255);
+        do Memory.poke(memAddress +929, 127);
+        do Memory.poke(memAddress +961, 63);
+        do Memory.poke(memAddress +993, 31);
+        return;
+    }
+
+    function void drawX(int location) {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 7);
+        do Memory.poke(memAddress +32, 15);
+        do Memory.poke(memAddress +64, 31);
+        do Memory.poke(memAddress +96, 62);
+        do Memory.poke(memAddress +128, 124);
+        do Memory.poke(memAddress +160, 248);
+        do Memory.poke(memAddress +192, 496);
+        do Memory.poke(memAddress +224, 992);
+        do Memory.poke(memAddress +256, 1984);
+        do Memory.poke(memAddress +288, 3968);
+        do Memory.poke(memAddress +320, 7936);
+        do Memory.poke(memAddress +352, 15872);
+        do Memory.poke(memAddress +384, 31744);
+        do Memory.poke(memAddress +416, -2048);
+        do Memory.poke(memAddress +448, -4096);
+        do Memory.poke(memAddress +480, -8192);
+        do Memory.poke(memAddress +512, -8192);
+        do Memory.poke(memAddress +544, -4096);
+        do Memory.poke(memAddress +576, -2048);
+        do Memory.poke(memAddress +608, 31744);
+        do Memory.poke(memAddress +640, 15872);
+        do Memory.poke(memAddress +672, 7936);
+        do Memory.poke(memAddress +704, 3968);
+        do Memory.poke(memAddress +736, 1984);
+        do Memory.poke(memAddress +768, 992);
+        do Memory.poke(memAddress +800, 496);
+        do Memory.poke(memAddress +832, 248);
+        do Memory.poke(memAddress +864, 124);
+        do Memory.poke(memAddress +896, 62);
+        do Memory.poke(memAddress +928, 31);
+        do Memory.poke(memAddress +960, 15);
+        do Memory.poke(memAddress +992, 7);
+        // column 1
+        do Memory.poke(memAddress +1, -8192);
+        do Memory.poke(memAddress +33, -4096);
+        do Memory.poke(memAddress +65, -2048);
+        do Memory.poke(memAddress +97, 31744);
+        do Memory.poke(memAddress +129, 15872);
+        do Memory.poke(memAddress +161, 7936);
+        do Memory.poke(memAddress +193, 3968);
+        do Memory.poke(memAddress +225, 1984);
+        do Memory.poke(memAddress +257, 992);
+        do Memory.poke(memAddress +289, 496);
+        do Memory.poke(memAddress +321, 248);
+        do Memory.poke(memAddress +353, 124);
+        do Memory.poke(memAddress +385, 62);
+        do Memory.poke(memAddress +417, 31);
+        do Memory.poke(memAddress +449, 15);
+        do Memory.poke(memAddress +481, 7);
+        do Memory.poke(memAddress +513, 7);
+        do Memory.poke(memAddress +545, 15);
+        do Memory.poke(memAddress +577, 31);
+        do Memory.poke(memAddress +609, 62);
+        do Memory.poke(memAddress +641, 124);
+        do Memory.poke(memAddress +673, 248);
+        do Memory.poke(memAddress +705, 496);
+        do Memory.poke(memAddress +737, 992);
+        do Memory.poke(memAddress +769, 1984);
+        do Memory.poke(memAddress +801, 3968);
+        do Memory.poke(memAddress +833, 7936);
+        do Memory.poke(memAddress +865, 15872);
+        do Memory.poke(memAddress +897, 31744);
+        do Memory.poke(memAddress +929, -2048);
+        do Memory.poke(memAddress +961, -4096);
+        do Memory.poke(memAddress +993, -8192);
+        return;
+    }
+
+    function void blanc(int location) {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        // column 0
+        // column 1
+        // column -3
+        do Memory.poke(memAddress -3, 0);
+        do Memory.poke(memAddress +29, 0);
+        do Memory.poke(memAddress +61, 0);
+        do Memory.poke(memAddress +93, 0);
+        do Memory.poke(memAddress +125, 0);
+        do Memory.poke(memAddress +157, 0);
+        do Memory.poke(memAddress +189, 0);
+        do Memory.poke(memAddress +221, 0);
+        do Memory.poke(memAddress +253, 0);
+        do Memory.poke(memAddress +285, 0);
+        do Memory.poke(memAddress +317, 0);
+        do Memory.poke(memAddress +349, 0);
+        do Memory.poke(memAddress +381, 0);
+        do Memory.poke(memAddress +413, 0);
+        do Memory.poke(memAddress +445, 0);
+        do Memory.poke(memAddress +477, 0);
+        do Memory.poke(memAddress +509, 0);
+        do Memory.poke(memAddress +541, 0);
+        do Memory.poke(memAddress +573, 0);
+        do Memory.poke(memAddress +605, 0);
+        do Memory.poke(memAddress +637, 0);
+        do Memory.poke(memAddress +669, 0);
+        do Memory.poke(memAddress +701, 0);
+        do Memory.poke(memAddress +733, 0);
+        do Memory.poke(memAddress +765, 0);
+        do Memory.poke(memAddress +797, 0);
+        do Memory.poke(memAddress +829, 0);
+        do Memory.poke(memAddress +861, 0);
+        do Memory.poke(memAddress +893, 0);
+        do Memory.poke(memAddress +925, 0);
+        do Memory.poke(memAddress +957, 0);
+        do Memory.poke(memAddress +989, 0);
+        // column -2
+        do Memory.poke(memAddress -2, 0);
+        do Memory.poke(memAddress +30, 0);
+        do Memory.poke(memAddress +62, 0);
+        do Memory.poke(memAddress +94, 0);
+        do Memory.poke(memAddress +126, 0);
+        do Memory.poke(memAddress +158, 0);
+        do Memory.poke(memAddress +190, 0);
+        do Memory.poke(memAddress +222, 0);
+        do Memory.poke(memAddress +254, 0);
+        do Memory.poke(memAddress +286, 0);
+        do Memory.poke(memAddress +318, 0);
+        do Memory.poke(memAddress +350, 0);
+        do Memory.poke(memAddress +382, 0);
+        do Memory.poke(memAddress +414, 0);
+        do Memory.poke(memAddress +446, 0);
+        do Memory.poke(memAddress +478, 0);
+        do Memory.poke(memAddress +510, 0);
+        do Memory.poke(memAddress +542, 0);
+        do Memory.poke(memAddress +574, 0);
+        do Memory.poke(memAddress +606, 0);
+        do Memory.poke(memAddress +638, 0);
+        do Memory.poke(memAddress +670, 0);
+        do Memory.poke(memAddress +702, 0);
+        do Memory.poke(memAddress +734, 0);
+        do Memory.poke(memAddress +766, 0);
+        do Memory.poke(memAddress +798, 0);
+        do Memory.poke(memAddress +830, 0);
+        do Memory.poke(memAddress +862, 0);
+        do Memory.poke(memAddress +894, 0);
+        do Memory.poke(memAddress +926, 0);
+        do Memory.poke(memAddress +958, 0);
+        do Memory.poke(memAddress +990, 0);
+        // column -1
+        return;
+    }
+}

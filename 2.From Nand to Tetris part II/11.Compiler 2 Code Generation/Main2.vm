@@ -1,0 +1,31 @@
+function Main.main 1
+push constant 4
+call String.new 1
+push constant 102
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 121
+call String.appendChar 2
+pop local 0
+push local 0
+push constant 2
+call String.charAt 2
+pop local 0
+call String.backSpace 0
+pop local 0
+push constant 1
+neg
+not
+if-goto Main_1
+push constant 0
+return
+goto Main_0
+label Main_1
+push constant 0
+return
+label Main_0
+push constant 0
+return

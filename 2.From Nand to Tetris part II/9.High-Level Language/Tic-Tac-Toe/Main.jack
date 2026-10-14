@@ -1,0 +1,15 @@
+/**
+ * The Main class initializes a new Tic Tac Toe game and starts it.
+ */
+class Main {
+
+    /** Initializes a new game and starts it. */    
+    function void main() {
+        var Game_Board game;
+
+        let game = Game_Board.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}
